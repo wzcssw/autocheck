@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>自动行号</title>
+	</head>
+	<body>
+		<style>
+			body{
+				text-align: center;
+			}
+		</style>
+		<h1>自动写入行号</h1>
+		<hr><br>
+		<h3>autocheck:</h3>
+		<textarea name="" id="abc" cols="200" rows="20" autocheck></textarea>
+		<h3>normal:</h3>
+		<textarea name="" id="dc" cols="200" rows="20" ></textarea>
+		
+		<!--    引入jquery   -->
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script>
+			var translate = function(event){
+				/*
+					自动写行号方法 by wzc 2017-08-31
+				*/
+				if(event.which == 8){ // 退格键跳出
+					return;
+				}
+				// 文本内容
+				var content = $(this).val();
+				// 所有段落
+				var blocks = content.split("\n");
+				var result = "";
+				var new_blocks = [];
+				// 添加行号
+				$(blocks).each(function(i,s){
+					if(new_blocks[i] == undefined){
+						new_blocks[i] = "";
+					}
+				    if(s.indexOf((i+1)+".") == -1){ // 如果没有段号
+				    	new_blocks[i] += ( (i+1) + "." + s ); // 添加段号
+				    }else{
+				    	new_blocks[i] = s;
+				    }
+				});
+				// 拼接字符串
+				$(new_blocks).each(function(i,s){
+					if((i+1) == new_blocks.length){ // 最后一行
+						result += s;
+					}else{
+						result += (s+"\n");
+					}
+				});
+				// 写入到输入框
+				$(this).val(result);
+			};
+
+			// 绑定事件
+			$().ready(function(){
+				$("textarea[autocheck]").keyup(translate);
+			});
+		</script>
+	</body>
+</html>
